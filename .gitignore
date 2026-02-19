@@ -1,0 +1,5 @@
+.DS_Store
+*.png.tmp
+.playwright-mcp/
+preparation/
+_*.code-workspace

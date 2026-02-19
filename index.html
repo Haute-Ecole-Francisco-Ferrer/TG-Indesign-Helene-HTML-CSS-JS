@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Techniques Graphiques — HEFF</title>
+  <link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body>
+
+  <!-- Sidebar -->
+  <aside class="sidebar">
+    <span class="sidebar__title">Techniques graphiques</span>
+    <span class="sidebar__logo">Heff</span>
+  </aside>
+
+  <!-- Menu burger -->
+  <button class="menu-toggle" id="menu-toggle" aria-label="Menu">
+    <span></span>
+    <span></span>
+    <span></span>
+  </button>
+
+  <!-- Grille projets (état par défaut) -->
+  <main class="grid" id="grid">
+    <!-- Encadré info école (item de la grille, hero) -->
+    <div class="grid__school" style="grid-area: s;">
+      <p class="grid__school-name">Haute École<br>Francisco Ferrer</p>
+      <p class="grid__school-address">Quai de Willebroeck 33<br>1000 Bruxelles</p>
+    </div>
+
+    <!-- Encart intro (sous le hero) -->
+    <div class="grid__intro" style="grid-area: t;">
+      <p>Bienvenue sur la vitrine<br>
+      créative des étudiantes<br>
+      <strong>Techniques Graphiques</strong></p>
+      <p class="grid__intro-options">3 options</p>
+      <p class="grid__intro-list"><strong>Web, Édition et<br>3D / Effets spéciaux</strong></p>
+    </div>
+
+    <div class="grid__item" data-project="mahira" style="grid-area: a;">
+      <img src="assets/images/mahira-1.jpg" alt="Packaging Mahira" loading="lazy">
+      <div class="grid__tooltip">
+        <span class="grid__tooltip-option">option édition</span>
+        <p>Création de <strong>packagings</strong> pour une collaboration entre un chocolatier et une herboristerie</p>
+        <span class="grid__tooltip-author">Mahira ♥ 2e année</span>
+      </div>
+    </div>
+
+    <div class="grid__item" data-project="iman" style="grid-area: b;">
+      <img src="assets/images/screenshot-48-36.png" alt="Projet Iman" loading="lazy">
+      <div class="grid__tooltip">
+        <span class="grid__tooltip-option">option édition</span>
+        <p>Création d'un <strong>livret imprimé</strong> pour le ciné club du Palace</p>
+        <span class="grid__tooltip-author">Iman ♥ 2e année</span>
+      </div>
+    </div>
+
+    <div class="grid__item" data-project="ayman" style="grid-area: c;">
+      <img src="assets/images/ayman-logan.jpg" alt="VFX Ayman & Logan" loading="lazy">
+      <div class="grid__tooltip">
+        <span class="grid__tooltip-option">option 3D / VFX</span>
+        <p>Séquence de film mêlant <strong>prises de vues réelles</strong> et animation 3D</p>
+        <span class="grid__tooltip-author">Hayman &amp; Logan ♥ 3e année</span>
+      </div>
+    </div>
+
+    <div class="grid__item" data-project="mahira" style="grid-area: d;">
+      <img src="assets/images/6-copie.png" alt="Projet édition" loading="lazy">
+      <div class="grid__tooltip">
+        <span class="grid__tooltip-option">option édition</span>
+        <p>Création de <strong>packagings</strong> pour une collaboration entre un chocolatier et une herboristerie</p>
+        <span class="grid__tooltip-author">Mahira ♥ 2e année</span>
+      </div>
+    </div>
+
+    <div class="grid__item" data-project="abir" style="grid-area: e;">
+      <img src="assets/images/img-9898.jpg" alt="Illegaal × Habeebee" loading="lazy">
+      <div class="grid__tooltip">
+        <span class="grid__tooltip-option">option édition</span>
+        <p><strong>Illegaal × Habeebee</strong> — Design graphique et identité visuelle</p>
+        <span class="grid__tooltip-author">Abir ♥ 2e année</span>
+      </div>
+    </div>
+
+    <div class="grid__item" data-project="vocabase" style="grid-area: f;">
+      <img src="assets/images/vocabase-06.jpg" alt="Vocabase" loading="lazy">
+      <div class="grid__tooltip">
+        <span class="grid__tooltip-option">option web</span>
+        <p><strong>Vocabase</strong> — Projet de design éditorial et web</p>
+        <span class="grid__tooltip-author">Sofian &amp; Melina ♥ 2e année</span>
+      </div>
+    </div>
+
+    <div class="grid__item" style="grid-area: g;">
+      <img src="assets/images/marais.png" alt="Marais" loading="lazy">
+      <div class="grid__tooltip">
+        <span class="grid__tooltip-option">option web</span>
+        <p>Création d'un <strong>site web</strong> interactif</p>
+        <span class="grid__tooltip-author">Maryna ♥ 2e année</span>
+      </div>
+    </div>
+
+    <div class="grid__item" style="grid-area: h;">
+      <img src="assets/images/screenshot-46-48.png" alt="Projet web" loading="lazy">
+      <div class="grid__tooltip">
+        <span class="grid__tooltip-option">option web</span>
+        <p>Projet de <strong>développement web</strong></p>
+        <span class="grid__tooltip-author">Étudiant·e ♥ HEFF</span>
+      </div>
+    </div>
+
+    <div class="grid__item" data-project="julie" style="grid-area: i;">
+      <img src="assets/images/screenshot-50-21.png" alt="Site musée du design" loading="lazy">
+      <div class="grid__tooltip">
+        <span class="grid__tooltip-option">option web</span>
+        <p>Création d'un <strong>site web</strong> pour le musée du design à Bruxelles</p>
+        <span class="grid__tooltip-author">Julie Braban ♥ 3e année</span>
+      </div>
+    </div>
+
+    <div class="grid__item" data-project="yiwei" style="grid-area: j;">
+      <img src="assets/images/personnage-yiwei.png" alt="Personnage 3D Yiwei" loading="lazy">
+      <div class="grid__tooltip">
+        <span class="grid__tooltip-option">option 3D / VFX</span>
+        <p>Création et <strong>modélisation</strong> d'un personnage en 3D</p>
+        <span class="grid__tooltip-author">Yiwei ♥ 2e année</span>
+      </div>
+    </div>
+
+    <div class="grid__item" data-project="elodie" style="grid-area: k;">
+      <img src="assets/images/devos-elodie.jpg" alt="Étiquettes Kombucha" loading="lazy">
+      <div class="grid__tooltip">
+        <span class="grid__tooltip-option">option édition</span>
+        <p>Création d'<strong>étiquettes</strong> et packaging pour une marque de kombucha</p>
+        <span class="grid__tooltip-author">Elodie Devos ♥ 1re année</span>
+      </div>
+    </div>
+
+    <div class="grid__item" style="grid-area: l;">
+      <img src="assets/images/screenshot-47-34.png" alt="Projet web" loading="lazy">
+      <div class="grid__tooltip">
+        <span class="grid__tooltip-option">option web</span>
+        <p>Projet de <strong>développement web</strong> et design d'interface</p>
+        <span class="grid__tooltip-author">Étudiant·e ♥ HEFF</span>
+      </div>
+    </div>
+
+    <div class="grid__item" data-project="vocabase" style="grid-area: m;">
+      <img src="assets/images/vocabase-05.jpg" alt="Vocabase" loading="lazy">
+      <div class="grid__tooltip">
+        <span class="grid__tooltip-option">option web</span>
+        <p><strong>Vocabase</strong> — Projet de design éditorial et web</p>
+        <span class="grid__tooltip-author">Sofian &amp; Melina ♥ 2e année</span>
+      </div>
+    </div>
+
+    <div class="grid__item" style="grid-area: n;">
+      <img src="assets/images/scan-blaireau.jpg" alt="Illustration blaireau" loading="lazy">
+      <div class="grid__tooltip">
+        <span class="grid__tooltip-option">option édition</span>
+        <p><strong>Illustration naturaliste</strong> — Technique de dessin traditionnel</p>
+        <span class="grid__tooltip-author">Étudiant·e ♥ HEFF</span>
+      </div>
+    </div>
+
+    <div class="grid__item" style="grid-area: o;">
+      <img src="assets/images/image07.jpg" alt="Projet 3D" loading="lazy">
+      <div class="grid__tooltip">
+        <span class="grid__tooltip-option">option 3D / VFX</span>
+        <p>Projet de <strong>modélisation 3D</strong> et effets visuels</p>
+        <span class="grid__tooltip-author">Étudiant·e ♥ HEFF</span>
+      </div>
+    </div>
+
+    <div class="grid__item" style="grid-area: p;">
+      <img src="assets/images/90969.jpg" alt="Projet graphique" loading="lazy">
+      <div class="grid__tooltip">
+        <span class="grid__tooltip-option">option 3D / VFX</span>
+        <p>Projet de <strong>design graphique</strong> et composition visuelle</p>
+        <span class="grid__tooltip-author">Étudiant·e ♥ HEFF</span>
+      </div>
+    </div>
+
+    <div class="grid__item" style="grid-area: q;">
+      <img src="assets/images/img-9060.jpg" alt="Photo projet" loading="lazy">
+      <div class="grid__tooltip">
+        <span class="grid__tooltip-option">option édition</span>
+        <p>Projet de <strong>photographie</strong> et mise en scène</p>
+        <span class="grid__tooltip-author">Étudiant·e ♥ HEFF</span>
+      </div>
+    </div>
+  </main>
+
+  <!-- Vue détail projet (masquée par défaut) -->
+  <section class="detail" id="detail" aria-hidden="true">
+    <button class="detail__close" id="detail-close" aria-label="Fermer">&times;</button>
+
+    <div class="detail__layout">
+      <div class="detail__left">
+        <div class="detail__image-main">
+          <img id="detail-img-main" src="" alt="">
+        </div>
+        <div class="detail__info">
+          <span class="detail__info-option" id="detail-option"></span>
+          <p class="detail__info-desc" id="detail-desc"></p>
+          <span class="detail__info-author" id="detail-author"></span>
+          <a href="#" class="detail__info-link" id="detail-link">En savoir plus sur l'option</a>
+        </div>
+      </div>
+      <div class="detail__right">
+        <img id="detail-img-1" src="" alt="" class="detail__thumb">
+        <img id="detail-img-2" src="" alt="" class="detail__thumb">
+        <img id="detail-img-3" src="" alt="" class="detail__thumb">
+        <img id="detail-img-4" src="" alt="" class="detail__thumb">
+      </div>
+    </div>
+  </section>
+
+  <!-- Menu overlay -->
+  <nav class="menu-overlay" id="menu-overlay" aria-hidden="true">
+    <div class="menu-overlay__inner">
+      <div class="menu-overlay__options">
+        <div class="menu-overlay__col menu-overlay__col--web">
+          <span class="menu-overlay__badge">WEB</span>
+          <ul>
+            <li>Design d'interface (UI)</li>
+            <li>Expérience utilisateur (UX)</li>
+            <li>Développement front-end</li>
+            <li>Design responsive</li>
+            <li>Motion design web</li>
+            <li>Prototypage interactif</li>
+          </ul>
+          <span class="menu-overlay__arrow">&rarr;</span>
+        </div>
+        <div class="menu-overlay__col menu-overlay__col--edition">
+          <span class="menu-overlay__badge">ÉDITION</span>
+          <ul>
+            <li>Typographie et mise en page</li>
+            <li>Design éditorial</li>
+            <li>Prépresse et impression</li>
+            <li>Illustration éditoriale</li>
+            <li>Design de couverture</li>
+            <li>Maquette et prototypage</li>
+          </ul>
+          <span class="menu-overlay__arrow">&rarr;</span>
+        </div>
+        <div class="menu-overlay__col menu-overlay__col--3d">
+          <span class="menu-overlay__badge">3D / EFFETS SPÉCIAUX</span>
+          <ul>
+            <li>Modélisation 3D</li>
+            <li>Animation et motion design</li>
+            <li>Effets visuels (VFX)</li>
+            <li>Rendu et texturing</li>
+            <li>Compositing</li>
+            <li>Réalité augmentée</li>
+          </ul>
+          <span class="menu-overlay__arrow">&rarr;</span>
+        </div>
+      </div>
+      <div class="menu-overlay__bottom">
+        <div class="menu-overlay__info">
+          <h2 class="menu-overlay__info-title">INFORMATIONS GÉNÉRALES</h2>
+          <span class="menu-overlay__arrow">&rarr;</span>
+        </div>
+        <ul class="menu-overlay__info-list">
+          <li>Les formations</li>
+          <li>Programmes</li>
+          <li>Accessibilité</li>
+          <li>Journées Portes ouvertes</li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="footer__inner">
+      <div class="footer__col">
+        <p class="footer__label">TECHNIQUES GRAPHIQUES</p>
+        <p>est un département de<br>la Haute École Francisco Ferrer</p>
+      </div>
+      <div class="footer__col">
+        <p>Quai de Willebroeck 33<br>1000 Bruxelles</p>
+        <p>+32 (0)2 279 57 92<br><a href="mailto:heff.technique@he-ferrer.eu">heff.technique@he-ferrer.eu</a></p>
+      </div>
+      <div class="footer__col">
+        <p class="footer__label">STIB / SNCB</p>
+        <p>TRAM 4 &bull; 10 &bull; 25 &bull; 55<br>BUS 14 &bull; 20 &bull; 56 &bull; 61 &bull; 80 &bull; 88<br>TRAIN &bull; GARE DU NORD</p>
+      </div>
+      <div class="footer__col footer__col--logos">
+        <div class="footer__logos">
+          <span class="footer__logo-circle">BXL</span>
+          <span class="footer__logo-circle footer__logo-circle--heff">HEFF</span>
+        </div>
+        <p class="footer__logo-text">HAUTE ÉCOLE FRANCISCO FERRER<br>TECHNIQUE</p>
+      </div>
+    </div>
+  </footer>
+
+  <script src="assets/js/main.js"></script>
+</body>
+</html>

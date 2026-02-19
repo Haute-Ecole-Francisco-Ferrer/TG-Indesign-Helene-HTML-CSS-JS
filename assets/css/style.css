@@ -1,0 +1,717 @@
+/* ─── Fonts ─── */
+@font-face {
+  font-family: 'Sligoil';
+  src: url('../fonts/SligoilVF.ttf') format('truetype');
+  font-weight: 700;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'GTWalsheim';
+  src: url('../fonts/GTWalsheim-Light.otf') format('opentype');
+  font-weight: 300;
+  font-display: swap;
+}
+
+/* ─── Reset & Base ─── */
+*, *::before, *::after {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html {
+  font-size: 16px;
+  -webkit-font-smoothing: antialiased;
+}
+
+body {
+  background: #0d0d0d;
+  color: #fff;
+  font-family: 'GTWalsheim', 'Helvetica Neue', Arial, sans-serif;
+  font-weight: 300;
+  overflow-x: hidden;
+  min-height: 100vh;
+}
+
+img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* ─── Sidebar ─── */
+.sidebar {
+  position: fixed;
+  left: 0;
+  top: 0;
+  width: 56px;
+  height: 100vh;
+  z-index: 100;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  padding: 24px 0;
+  background: rgb(96, 38, 158);
+}
+
+.sidebar__title {
+  font-family: 'Sligoil', serif;
+  font-size: 14px;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  writing-mode: vertical-rl;
+  transform: rotate(180deg);
+  white-space: nowrap;
+}
+
+.sidebar__logo {
+  font-family: 'GTWalsheim', sans-serif;
+  font-size: 14px;
+  writing-mode: vertical-rl;
+  transform: rotate(180deg);
+  border: 1.5px solid rgba(255, 255, 255, 0.8);
+  border-radius: 20px;
+  padding: 8px 6px;
+  letter-spacing: 0.05em;
+}
+
+/* ─── Menu burger ─── */
+.menu-toggle {
+  position: fixed;
+  top: 16px;
+  right: 20px;
+  z-index: 110;
+  background: rgb(96, 38, 158);
+  border: none;
+  border-radius: 50%;
+  width: 44px;
+  height: 44px;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  transition: opacity 0.2s;
+}
+
+.menu-toggle span {
+  display: block;
+  width: 20px;
+  height: 2px;
+  background: #fff;
+  border-radius: 1px;
+}
+
+.menu-toggle:hover {
+  opacity: 0.8;
+}
+
+body.detail-open .menu-toggle {
+  opacity: 0;
+  pointer-events: none;
+}
+
+/* ─── Encart intro (grid item sous le hero) ─── */
+.grid__intro {
+  background: rgb(96, 38, 158);
+  color: #fff;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 24px 20px;
+  font-size: 14px;
+  line-height: 1.6;
+}
+
+.grid__intro strong {
+  font-family: 'Sligoil', serif;
+  font-weight: 700;
+}
+
+.grid__intro p + p {
+  margin-top: 10px;
+}
+
+.grid__intro-options {
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  opacity: 0.7;
+}
+
+.grid__intro-list {
+  font-size: 16px;
+}
+
+/* ─── Grille mosaïque ─── */
+.grid {
+  margin-left: 56px;
+  display: grid;
+  gap: 0;
+  grid-template-columns: repeat(8, 1fr);
+  grid-template-rows: repeat(6, calc(100vh / 6)) repeat(6, minmax(100px, auto));
+  grid-template-areas:
+    "a a a s s c c c"
+    "a a a b b c c c"
+    "a a a b b c c c"
+    "d d d e f c c c"
+    "d d d e f g g h"
+    "d d d e f g g h"
+    "i i t t t k k k"
+    "i i j j j k k k"
+    "l l m m m k k k"
+    "n n o o p p p q"
+    "n n o o p p p q"
+    "n n o o p p p q";
+  transition: opacity 0.4s;
+}
+
+body.detail-open .grid {
+  opacity: 0;
+  pointer-events: none;
+}
+
+/* ─── Encadré école (grid item) ─── */
+.grid__school {
+  background: rgb(96, 38, 158);
+  color: #fff;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 16px;
+}
+
+.grid__school-name {
+  font-family: 'GTWalsheim', sans-serif;
+  font-size: 15px;
+  font-weight: 300;
+  line-height: 1.4;
+  margin-bottom: 12px;
+}
+
+.grid__school-address {
+  font-family: 'GTWalsheim', sans-serif;
+  font-size: 13px;
+  font-weight: 300;
+  line-height: 1.4;
+  opacity: 0.85;
+}
+
+/* ─── Grid items ─── */
+.grid__item {
+  position: relative;
+  overflow: hidden;
+  cursor: pointer;
+  min-height: 0;
+}
+
+.grid__item img {
+  transition: transform 0.4s ease, filter 0.4s ease;
+}
+
+.grid__item:hover img {
+  transform: scale(1.03);
+  filter: brightness(0.7);
+}
+
+/* ─── Tooltip violet (hover) ─── */
+.grid__tooltip {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: rgb(96, 38, 158);
+  color: #fff;
+  padding: 14px 16px;
+  font-size: 12px;
+  line-height: 1.5;
+  opacity: 0;
+  transform: translateY(8px);
+  transition: opacity 0.25s ease, transform 0.25s ease;
+  pointer-events: none;
+}
+
+.grid__item:hover .grid__tooltip {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.grid__tooltip-option {
+  display: inline-block;
+  font-family: 'Sligoil', serif;
+  font-weight: 700;
+  font-size: 9px;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  margin-bottom: 8px;
+  background: rgba(255, 255, 255, 0.15);
+  padding: 3px 10px;
+  border-radius: 3px;
+}
+
+.grid__tooltip p {
+  margin-bottom: 8px;
+  font-size: 13px;
+  line-height: 1.45;
+}
+
+.grid__tooltip p strong {
+  font-weight: 700;
+}
+
+.grid__tooltip-author {
+  display: block;
+  font-size: 11px;
+  opacity: 0.7;
+}
+
+/* ─── Vue détail ─── */
+.detail {
+  position: fixed;
+  inset: 0;
+  z-index: 200;
+  background: #0d0d0d;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.5s ease, visibility 0.5s;
+  overflow: hidden;
+}
+
+.detail[aria-hidden="false"] {
+  opacity: 1;
+  visibility: visible;
+}
+
+.detail__close {
+  position: absolute;
+  top: 16px;
+  right: 20px;
+  z-index: 210;
+  background: rgb(96, 38, 158);
+  border: none;
+  color: #fff;
+  font-size: 24px;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: opacity 0.2s;
+  line-height: 1;
+}
+
+.detail__close:hover {
+  opacity: 0.8;
+}
+
+.detail__layout {
+  display: flex;
+  width: 100%;
+  height: 100vh;
+  margin-left: 56px;
+}
+
+.detail__left {
+  flex: 0 0 38%;
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+}
+
+.detail__image-main {
+  flex: 1;
+  min-height: 0;
+  overflow: hidden;
+}
+
+.detail__image-main img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.detail__info {
+  flex-shrink: 0;
+  background: rgb(96, 38, 158);
+  padding: 20px 24px;
+  font-size: 13px;
+  line-height: 1.6;
+}
+
+.detail__info-option {
+  display: block;
+  font-family: 'Sligoil', serif;
+  font-weight: 700;
+  font-size: 11px;
+  text-transform: lowercase;
+  letter-spacing: 0.08em;
+  margin-bottom: 6px;
+  opacity: 0.8;
+}
+
+.detail__info-desc {
+  margin-bottom: 10px;
+}
+
+.detail__info-author {
+  display: block;
+  font-size: 12px;
+  opacity: 0.7;
+  margin-bottom: 12px;
+}
+
+.detail__info-link {
+  display: inline-block;
+  color: #fff;
+  font-size: 11px;
+  text-decoration: none;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.4);
+  padding-bottom: 2px;
+  transition: border-color 0.2s;
+}
+
+.detail__info-link:hover {
+  border-color: #fff;
+}
+
+.detail__right {
+  flex: 1;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: 1fr 1fr;
+  gap: 0;
+  height: 100vh;
+}
+
+.detail__thumb {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  min-height: 0;
+}
+
+/* ─── Footer ─── */
+.footer {
+  margin-left: 56px;
+  background: #d4b8e8;
+  color: #2a1245;
+  padding: 32px 40px;
+  font-size: 13px;
+  line-height: 1.6;
+}
+
+.footer__inner {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr 1fr;
+  gap: 32px;
+  align-items: start;
+}
+
+.footer__label {
+  font-family: 'Sligoil', serif;
+  font-weight: 700;
+  font-size: 13px;
+  margin-bottom: 4px;
+}
+
+.footer__col p + p {
+  margin-top: 10px;
+}
+
+.footer__col a {
+  color: #2a1245;
+  text-decoration: none;
+}
+
+.footer__col a:hover {
+  text-decoration: underline;
+}
+
+.footer__col--logos {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 16px;
+}
+
+.footer__logos {
+  display: flex;
+  gap: 8px;
+  flex-shrink: 0;
+}
+
+.footer__logo-circle {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  background: #2a1245;
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: 'Sligoil', serif;
+  font-weight: 700;
+  font-size: 11px;
+  letter-spacing: 0.05em;
+}
+
+.footer__logo-circle--heff {
+  font-size: 10px;
+}
+
+.footer__logo-text {
+  font-family: 'Sligoil', serif;
+  font-weight: 700;
+  font-size: 11px;
+  line-height: 1.4;
+  text-transform: uppercase;
+}
+
+/* ─── Menu overlay ─── */
+.menu-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 90;
+  background: rgba(13, 13, 13, 0.5);
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.4s ease, visibility 0.4s;
+  overflow: hidden;
+}
+
+.menu-overlay[aria-hidden="false"] {
+  opacity: 1;
+  visibility: visible;
+}
+
+.menu-overlay__inner {
+  margin-left: 56px;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.menu-overlay__options {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  flex: 7;
+}
+
+.menu-overlay__col {
+  padding: 48px 36px 32px;
+  display: flex;
+  flex-direction: column;
+}
+
+.menu-overlay__col--web {
+  background: rgb(96, 38, 158);
+}
+
+.menu-overlay__col--edition {
+  background: rgb(113, 52, 172);
+}
+
+.menu-overlay__col--3d {
+  background: rgb(130, 65, 188);
+}
+
+.menu-overlay__badge {
+  display: inline-block;
+  font-family: 'Sligoil', serif;
+  font-weight: 700;
+  font-size: 15px;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  border: 1.5px solid rgba(255, 255, 255, 0.4);
+  padding: 7px 16px;
+  border-radius: 4px;
+  margin-bottom: 28px;
+  align-self: flex-start;
+}
+
+.menu-overlay__col ul {
+  list-style: none;
+  font-size: 13px;
+  line-height: 2.1;
+}
+
+.menu-overlay__arrow {
+  font-size: 26px;
+  opacity: 0.5;
+  margin-top: auto;
+  padding-top: 24px;
+  align-self: flex-start;
+}
+
+.menu-overlay__bottom {
+  flex: 3;
+  background: rgba(210, 190, 230, 0.95);
+  color: rgb(96, 38, 158);
+  padding: 28px 36px;
+  display: flex;
+  gap: 60px;
+  align-items: flex-start;
+}
+
+.menu-overlay__info {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.menu-overlay__info-title {
+  font-family: 'Sligoil', serif;
+  font-weight: 700;
+  font-size: 17px;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.menu-overlay__info .menu-overlay__arrow {
+  margin-top: 0;
+  padding-top: 0;
+  opacity: 0.6;
+}
+
+.menu-overlay__info-list {
+  list-style: none;
+  font-family: 'Sligoil', serif;
+  font-weight: 700;
+  font-size: 12px;
+  line-height: 1.9;
+}
+
+/* Menu toggle open state */
+body.menu-open .menu-toggle {
+  background: transparent;
+  border: 2px solid #fff;
+}
+
+body.menu-open .menu-toggle span {
+  position: absolute;
+  width: 20px;
+}
+
+body.menu-open .menu-toggle span:nth-child(1) {
+  transform: rotate(45deg);
+}
+
+body.menu-open .menu-toggle span:nth-child(2) {
+  opacity: 0;
+}
+
+body.menu-open .menu-toggle span:nth-child(3) {
+  transform: rotate(-45deg);
+}
+
+/* ─── Large screens (4 colonnes visuelles) ─── */
+@media (min-width: 1520px) {
+  .grid {
+    grid-template-columns: repeat(4, 1fr);
+    grid-template-rows: repeat(4, calc(100vh / 4)) repeat(4, minmax(120px, auto));
+    grid-template-areas:
+      "a a s c"
+      "a a b c"
+      "e f g d"
+      "e f h d"
+      "i t t k"
+      "i j l k"
+      "m n o p"
+      "m n o q";
+  }
+}
+
+/* ─── Responsive ─── */
+@media (max-width: 768px) {
+  .sidebar {
+    width: 44px;
+    padding: 16px 0;
+  }
+
+  .sidebar__title {
+    font-size: 12px;
+  }
+
+  .grid {
+    margin-left: 44px;
+    grid-template-columns: repeat(4, 1fr);
+    grid-template-areas:
+      "s s s s"
+      "a a b b"
+      "a a b b"
+      "c c c c"
+      "t t t t"
+      "d d e f"
+      "d d g h"
+      "i j j k"
+      "l m m k"
+      "n o p q";
+  }
+
+  .intro {
+    right: 16px;
+    bottom: 16px;
+    font-size: 11px;
+  }
+
+  .detail__layout {
+    flex-direction: column;
+    margin-left: 44px;
+    overflow-y: auto;
+  }
+
+  .detail__left {
+    flex: none;
+  }
+
+  .detail__image-main {
+    height: 50vw;
+  }
+
+  .detail__right {
+    min-height: 60vw;
+  }
+
+  .footer {
+    margin-left: 44px;
+    padding: 24px 20px;
+  }
+
+  .footer__inner {
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+  }
+
+  .footer__col--logos {
+    grid-column: 1 / -1;
+  }
+
+  .menu-overlay__inner {
+    margin-left: 44px;
+  }
+
+  .menu-overlay__options {
+    grid-template-columns: 1fr;
+  }
+
+  .menu-overlay__col {
+    padding: 32px 24px 24px;
+  }
+
+  .menu-overlay__bottom {
+    flex-direction: column;
+    gap: 16px;
+    padding: 24px;
+  }
+}
