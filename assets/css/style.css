@@ -2,7 +2,7 @@
 @font-face {
   font-family: 'Sligoil';
   src: url('../fonts/SligoilVF.ttf') format('truetype');
-  font-weight: 700;
+  font-weight: 100 900;
   font-display: swap;
 }
 
@@ -11,6 +11,14 @@
   src: url('../fonts/GTWalsheim-Light.otf') format('opentype');
   font-weight: 300;
   font-display: swap;
+}
+
+/* ─── Grain texture variables ─── */
+:root {
+  --grain-opacity: 0.68;
+  --grain-blend: hard-light;
+  --grain-frequency: 0.75;
+  --grain-octaves: 4;
 }
 
 /* ─── Reset & Base ─── */
@@ -32,6 +40,19 @@ body {
   font-weight: 300;
   overflow-x: hidden;
   min-height: 100vh;
+}
+
+/* ─── Global grain/noise texture overlay ─── */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  z-index: 10000;
+  pointer-events: none;
+  opacity: var(--grain-opacity);
+  mix-blend-mode: var(--grain-blend);
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)' opacity='1'/%3E%3C/svg%3E");
+  background-repeat: repeat;
 }
 
 img {
@@ -59,9 +80,9 @@ img {
 
 .sidebar__title {
   font-family: 'Sligoil', serif;
-  font-size: 14px;
-  font-weight: 700;
-  letter-spacing: 0.05em;
+  font-size: 30px;
+  font-weight: 300;
+  letter-spacing: 0.08em;
   text-transform: uppercase;
   writing-mode: vertical-rl;
   transform: rotate(180deg);
@@ -405,7 +426,7 @@ body.detail-open .grid {
 .footer {
   margin-left: 56px;
   background: #d4b8e8;
-  color: #2a1245;
+  color: #652da1;
   padding: 32px 40px;
   font-size: 13px;
   line-height: 1.6;
@@ -430,7 +451,7 @@ body.detail-open .grid {
 }
 
 .footer__col a {
-  color: #2a1245;
+  color: #652da1;
   text-decoration: none;
 }
 
@@ -455,7 +476,7 @@ body.detail-open .grid {
   width: 48px;
   height: 48px;
   border-radius: 50%;
-  background: #2a1245;
+  background: #652da1;
   color: #fff;
   display: flex;
   align-items: center;
@@ -509,59 +530,65 @@ body.detail-open .grid {
 }
 
 .menu-overlay__col {
-  padding: 48px 36px 32px;
+  padding: 0 36px 32px;
+  padding-top: 25%;
   display: flex;
   flex-direction: column;
+  position: relative;
+  overflow: hidden;
 }
 
+
 .menu-overlay__col--web {
-  background: rgb(96, 38, 158);
+  background: rgb(150, 100, 200);
 }
 
 .menu-overlay__col--edition {
-  background: rgb(113, 52, 172);
+  background: rgb(115, 55, 170);
 }
 
 .menu-overlay__col--3d {
-  background: rgb(130, 65, 188);
+  background: rgb(80, 25, 140);
 }
 
 .menu-overlay__badge {
   display: inline-block;
-  font-family: 'Sligoil', serif;
-  font-weight: 700;
-  font-size: 15px;
+  font-family: 'GTWalsheim', 'Helvetica Neue', Arial, sans-serif;
+  font-weight: 300;
+  font-size: 32px;
   text-transform: uppercase;
-  letter-spacing: 0.05em;
-  border: 1.5px solid rgba(255, 255, 255, 0.4);
-  padding: 7px 16px;
-  border-radius: 4px;
-  margin-bottom: 28px;
+  letter-spacing: 0.03em;
+  border: 1.5px solid rgba(255, 255, 255, 0.5);
+  padding: 12px 36px;
+  border-radius: 50px;
+  margin-bottom: 24px;
   align-self: flex-start;
 }
 
 .menu-overlay__col ul {
   list-style: none;
-  font-size: 13px;
-  line-height: 2.1;
+  font-family: 'Sligoil', serif;
+  font-weight: 300;
+  font-size: 18px;
+  line-height: 2;
 }
 
 .menu-overlay__arrow {
-  font-size: 26px;
+  font-size: 36px;
   opacity: 0.5;
   margin-top: auto;
-  padding-top: 24px;
+  padding-top: 16px;
   align-self: flex-start;
 }
 
 .menu-overlay__bottom {
   flex: 3;
-  background: rgba(210, 190, 230, 0.95);
+  background: #d4b8e8;
   color: rgb(96, 38, 158);
-  padding: 28px 36px;
+  padding: 36px 36px;
   display: flex;
   gap: 60px;
-  align-items: flex-start;
+  align-items: center;
 }
 
 .menu-overlay__info {
@@ -571,9 +598,9 @@ body.detail-open .grid {
 }
 
 .menu-overlay__info-title {
-  font-family: 'Sligoil', serif;
-  font-weight: 700;
-  font-size: 17px;
+  font-family: 'GTWalsheim', 'Helvetica Neue', Arial, sans-serif;
+  font-weight: 300;
+  font-size: 32px;
   text-transform: uppercase;
   letter-spacing: 0.04em;
 }
@@ -582,14 +609,15 @@ body.detail-open .grid {
   margin-top: 0;
   padding-top: 0;
   opacity: 0.6;
+  font-size: 36px;
 }
 
 .menu-overlay__info-list {
   list-style: none;
   font-family: 'Sligoil', serif;
-  font-weight: 700;
-  font-size: 12px;
-  line-height: 1.9;
+  font-weight: 300;
+  font-size: 18px;
+  line-height: 2;
 }
 
 /* Menu toggle open state */
