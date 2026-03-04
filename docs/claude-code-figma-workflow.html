@@ -1,0 +1,986 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Claude Code × Figma — Guide technique complet</title>
+  <style>
+    :root {
+      --bg: #0d0d0d;
+      --surface: #1a1a2e;
+      --surface-2: #16213e;
+      --violet: #60269e;
+      --violet-light: #d2bee6;
+      --text: #e0e0e0;
+      --text-muted: #999;
+      --accent: #a78bfa;
+      --green: #4ade80;
+      --orange: #fb923c;
+      --red: #f87171;
+      --code-bg: #0f0f23;
+      --border: #2a2a4a;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.7;
+      font-size: 16px;
+    }
+
+    .container {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 0 2rem;
+    }
+
+    /* Header */
+    header {
+      border-bottom: 1px solid var(--border);
+      padding: 3rem 0 2rem;
+      margin-bottom: 3rem;
+    }
+    header .badge {
+      display: inline-block;
+      background: var(--violet);
+      color: #fff;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      padding: 4px 12px;
+      border-radius: 4px;
+      margin-bottom: 1rem;
+    }
+    header h1 {
+      font-size: 2.4rem;
+      line-height: 1.2;
+      font-weight: 800;
+      margin-bottom: 0.75rem;
+    }
+    header h1 span { color: var(--accent); }
+    header .subtitle {
+      font-size: 1.15rem;
+      color: var(--text-muted);
+      max-width: 700px;
+    }
+    header .meta {
+      margin-top: 1.5rem;
+      font-size: 0.85rem;
+      color: var(--text-muted);
+    }
+
+    /* TOC */
+    .toc {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 1.5rem 2rem;
+      margin-bottom: 3rem;
+    }
+    .toc h2 {
+      font-size: 0.85rem;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--accent);
+      margin-bottom: 1rem;
+    }
+    .toc ol {
+      padding-left: 1.2rem;
+    }
+    .toc li {
+      margin-bottom: 0.4rem;
+    }
+    .toc a {
+      color: var(--text);
+      text-decoration: none;
+      border-bottom: 1px solid transparent;
+      transition: border-color 0.2s;
+    }
+    .toc a:hover {
+      border-bottom-color: var(--accent);
+      color: var(--accent);
+    }
+
+    /* Sections */
+    section {
+      margin-bottom: 3.5rem;
+    }
+    h2 {
+      font-size: 1.6rem;
+      font-weight: 700;
+      margin-bottom: 1rem;
+      padding-bottom: 0.5rem;
+      border-bottom: 2px solid var(--violet);
+      color: #fff;
+    }
+    h3 {
+      font-size: 1.15rem;
+      font-weight: 600;
+      margin: 2rem 0 0.75rem;
+      color: var(--accent);
+    }
+    h4 {
+      font-size: 1rem;
+      font-weight: 600;
+      margin: 1.5rem 0 0.5rem;
+      color: var(--violet-light);
+    }
+    p { margin-bottom: 1rem; }
+    ul, ol {
+      margin-bottom: 1rem;
+      padding-left: 1.5rem;
+    }
+    li { margin-bottom: 0.35rem; }
+
+    /* Code */
+    code {
+      font-family: 'JetBrains Mono', 'SF Mono', 'Fira Code', monospace;
+      font-size: 0.88em;
+      background: var(--code-bg);
+      padding: 2px 6px;
+      border-radius: 4px;
+      border: 1px solid var(--border);
+    }
+    pre {
+      background: var(--code-bg);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 1.25rem 1.5rem;
+      overflow-x: auto;
+      margin-bottom: 1.5rem;
+      line-height: 1.5;
+    }
+    pre code {
+      background: none;
+      border: none;
+      padding: 0;
+      font-size: 0.85rem;
+    }
+    .code-label {
+      display: inline-block;
+      font-size: 0.7rem;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--text-muted);
+      background: var(--border);
+      padding: 2px 8px;
+      border-radius: 4px 4px 0 0;
+      margin-bottom: -1px;
+      position: relative;
+      z-index: 1;
+    }
+
+    /* Tables */
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-bottom: 1.5rem;
+      font-size: 0.9rem;
+    }
+    th, td {
+      padding: 0.6rem 1rem;
+      border: 1px solid var(--border);
+      text-align: left;
+    }
+    th {
+      background: var(--surface);
+      font-weight: 600;
+      color: var(--accent);
+      font-size: 0.8rem;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+    td { background: var(--code-bg); }
+
+    /* Callouts */
+    .callout {
+      border-left: 4px solid var(--violet);
+      background: var(--surface);
+      padding: 1rem 1.25rem;
+      border-radius: 0 8px 8px 0;
+      margin-bottom: 1.5rem;
+    }
+    .callout.warning {
+      border-left-color: var(--orange);
+    }
+    .callout.success {
+      border-left-color: var(--green);
+    }
+    .callout strong {
+      color: var(--accent);
+    }
+
+    /* Diagram */
+    .diagram {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 2rem;
+      margin: 1.5rem 0;
+      text-align: center;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.85rem;
+      line-height: 2;
+      overflow-x: auto;
+    }
+    .diagram .arrow { color: var(--accent); }
+    .diagram .node {
+      display: inline-block;
+      background: var(--code-bg);
+      border: 1px solid var(--violet);
+      padding: 4px 12px;
+      border-radius: 6px;
+      color: var(--violet-light);
+    }
+    .diagram .node.active {
+      background: var(--violet);
+      color: #fff;
+      border-color: var(--accent);
+    }
+
+    /* Steps */
+    .step {
+      display: flex;
+      gap: 1rem;
+      margin-bottom: 1.5rem;
+      align-items: flex-start;
+    }
+    .step-number {
+      flex-shrink: 0;
+      width: 36px;
+      height: 36px;
+      background: var(--violet);
+      color: #fff;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      font-size: 0.9rem;
+    }
+    .step-content {
+      flex: 1;
+      padding-top: 6px;
+    }
+    .step-content strong {
+      color: #fff;
+    }
+
+    /* Tags */
+    .tag {
+      display: inline-block;
+      font-size: 0.7rem;
+      font-weight: 700;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      padding: 2px 8px;
+      border-radius: 4px;
+      margin-right: 0.5rem;
+    }
+    .tag.creation { background: #1e3a5f; color: #60a5fa; }
+    .tag.extraction { background: #3b1f4e; color: #c084fc; }
+    .tag.debug { background: #3f2a1a; color: #fb923c; }
+
+    /* Footer */
+    footer {
+      border-top: 1px solid var(--border);
+      padding: 2rem 0;
+      margin-top: 3rem;
+      font-size: 0.85rem;
+      color: var(--text-muted);
+    }
+    footer a { color: var(--accent); }
+
+    /* File path highlight */
+    .filepath {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.82em;
+      color: var(--green);
+      background: rgba(74, 222, 128, 0.08);
+      padding: 2px 6px;
+      border-radius: 4px;
+    }
+
+    @media (max-width: 768px) {
+      header h1 { font-size: 1.6rem; }
+      .container { padding: 0 1rem; }
+      pre { font-size: 0.78rem; }
+    }
+  </style>
+</head>
+<body>
+
+<div class="container">
+
+  <header>
+    <span class="badge">Guide technique</span>
+    <h1>Claude Code <span>×</span> Figma<br>Le workflow IA complet</h1>
+    <p class="subtitle">
+      Comment piloter Figma programmatiquement depuis Claude Code avec deux MCP complémentaires :
+      création en temps réel, extraction de tokens, import d'images et design system automation.
+    </p>
+    <p class="meta">
+      Février 2026 — Basé sur une expérience de production réelle (projet TG HEFF)
+      <br>À combiner avec <a href="https://www.figma.com/blog/introducing-claude-code-to-figma/" style="color: var(--accent);">From Claude Code to Figma</a> (Figma Blog, 17 fév 2026)
+    </p>
+  </header>
+
+  <!-- TOC -->
+  <nav class="toc">
+    <h2>Sommaire</h2>
+    <ol>
+      <li><a href="#concept">Le concept : code → canvas → code</a></li>
+      <li><a href="#architecture">Architecture : 2 MCP, 2 plugins, 1 workflow</a></li>
+      <li><a href="#setup-ctf">Setup 1 — Claude Talk to Figma (création temps réel)</a></li>
+      <li><a href="#setup-fcm">Setup 2 — Figma Console MCP (extraction + execute)</a></li>
+      <li><a href="#workflow">Le workflow combiné en pratique</a></li>
+      <li><a href="#tools">Catalogue des outils disponibles</a></li>
+      <li><a href="#images">Import d'images programmatique</a></li>
+      <li><a href="#limitations">Limitations et contournements</a></li>
+      <li><a href="#config">Configuration complète (.claude.json)</a></li>
+      <li><a href="#ressources">Ressources</a></li>
+    </ol>
+  </nav>
+
+  <!-- 1. CONCEPT -->
+  <section id="concept">
+    <h2>1. Le concept : code → canvas → code</h2>
+
+    <p>
+      Le blog Figma du 17 février 2026 annonce une vision :
+      <strong>capturer des interfaces construites en code et les convertir en frames Figma éditables</strong>.
+      Le code est puissant pour <em>converger</em> (build, test, itérer). Le canvas Figma est puissant
+      pour <em>diverger</em> (explorer, comparer, collaborer).
+    </p>
+
+    <div class="callout">
+      <strong>La boucle complète :</strong> Claude Code génère du HTML/CSS → on capture en Figma →
+      on itère visuellement sur le canvas → le MCP Figma ramène le design dans le code.
+      C'est un <strong>roundtrip bidirectionnel</strong>.
+    </div>
+
+    <p>
+      Mais au-delà de la capture d'écran, il existe un workflow plus puissant :
+      <strong>piloter Figma directement depuis Claude Code via MCP</strong> — créer des frames,
+      appliquer des polices, construire des composants, importer des images, le tout par commandes.
+    </p>
+
+    <div class="diagram">
+      <span class="node active">Claude Code</span>
+      <span class="arrow"> ←→ </span>
+      <span class="node">MCP Server</span>
+      <span class="arrow"> ←→ </span>
+      <span class="node">WebSocket / API</span>
+      <span class="arrow"> ←→ </span>
+      <span class="node active">Figma Desktop</span>
+    </div>
+  </section>
+
+  <!-- 2. ARCHITECTURE -->
+  <section id="architecture">
+    <h2>2. Architecture : 2 MCP, 2 plugins, 1 workflow</h2>
+
+    <p>Deux MCP complémentaires permettent de couvrir tous les cas d'usage :</p>
+
+    <table>
+      <thead>
+        <tr>
+          <th></th>
+          <th>claude-talk-to-figma</th>
+          <th>figma-console-mcp</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>Rôle principal</strong></td>
+          <td>Création et modification temps réel</td>
+          <td>Extraction, debug, execute arbitraire</td>
+        </tr>
+        <tr>
+          <td><strong>Connexion</strong></td>
+          <td>WebSocket + Plugin (channel ID)</td>
+          <td>API Token + Desktop Bridge plugin</td>
+        </tr>
+        <tr>
+          <td><strong>Plugin Figma</strong></td>
+          <td>Claude MCP Plugin</td>
+          <td>Figma Desktop Bridge</td>
+        </tr>
+        <tr>
+          <td><strong>Port</strong></td>
+          <td>3055 (WebSocket)</td>
+          <td>9223–9232 (multi-instance)</td>
+        </tr>
+        <tr>
+          <td><strong>Nb d'outils</strong></td>
+          <td>~25 outils spécialisés</td>
+          <td>~56 outils + <code>figma_execute</code></td>
+        </tr>
+        <tr>
+          <td><strong>Import images</strong></td>
+          <td>Non</td>
+          <td>Oui (via <code>figma_execute</code>)</td>
+        </tr>
+        <tr>
+          <td><strong>Auteur</strong></td>
+          <td><a href="https://github.com/arinspunk/claude-talk-to-figma-mcp" style="color:var(--accent)">arinspunk</a></td>
+          <td><a href="https://github.com/southleft/figma-console-mcp" style="color:var(--accent)">southleft</a></td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="callout success">
+      <strong>Pourquoi les deux ?</strong>
+      <code>claude-talk-to-figma</code> excelle en création rapide (frames, textes, rectangles, auto-layout).
+      <code>figma-console-mcp</code> excelle en opérations avancées (execute JS arbitraire, image fills,
+      variables, design tokens, screenshots). Ensemble, ils couvrent 100% des besoins.
+    </div>
+  </section>
+
+  <!-- 3. SETUP CTF -->
+  <section id="setup-ctf">
+    <h2>3. Setup 1 — Claude Talk to Figma</h2>
+
+    <h3>Prérequis</h3>
+    <ul>
+      <li><strong>Bun</strong> installé (<code>curl -fsSL https://bun.sh/install | bash</code>)</li>
+      <li><strong>Figma Desktop</strong> (pas le navigateur)</li>
+    </ul>
+
+    <h3>Installation pas à pas</h3>
+
+    <div class="step">
+      <div class="step-number">1</div>
+      <div class="step-content">
+        <strong>Cloner et builder le repo</strong>
+        <pre><code>git clone https://github.com/arinspunk/claude-talk-to-figma-mcp.git ~/claude-talk-to-figma-mcp
+cd ~/claude-talk-to-figma-mcp
+bun install
+bun run build</code></pre>
+      </div>
+    </div>
+
+    <div class="step">
+      <div class="step-number">2</div>
+      <div class="step-content">
+        <strong>Lancer le serveur WebSocket</strong>
+        <pre><code>cd ~/claude-talk-to-figma-mcp && bun run dist/socket.js</code></pre>
+        <p>Le serveur écoute sur <code>ws://localhost:3055</code>. Vérifier : <code>http://localhost:3055/status</code></p>
+      </div>
+    </div>
+
+    <div class="step">
+      <div class="step-number">3</div>
+      <div class="step-content">
+        <strong>Importer le plugin dans Figma</strong>
+        <p>Dans Figma Desktop :</p>
+        <ol>
+          <li>Menu hamburger (☰) → <strong>Plugins</strong> → <strong>Development</strong> → <strong>Import plugin from manifest…</strong></li>
+          <li>Sélectionner le fichier :<br>
+            <span class="filepath">~/claude-talk-to-figma-mcp/src/claude_mcp_plugin/manifest.json</span>
+          </li>
+        </ol>
+      </div>
+    </div>
+
+    <div class="step">
+      <div class="step-number">4</div>
+      <div class="step-content">
+        <strong>Connecter le plugin</strong>
+        <p>Dans votre fichier Figma :</p>
+        <ol>
+          <li><strong>Plugins</strong> → <strong>Development</strong> → <strong>Claude MCP Plugin</strong></li>
+          <li>Cliquer <strong>Connect</strong></li>
+          <li>Noter le <strong>channel ID</strong> affiché (ex: <code>3qbur6w5</code>)</li>
+        </ol>
+      </div>
+    </div>
+
+    <div class="step">
+      <div class="step-number">5</div>
+      <div class="step-content">
+        <strong>Dans Claude Code : rejoindre le channel</strong>
+        <p>Claude utilise l'outil <code>join_channel</code> avec le channel ID. À partir de là, tous les outils de création sont disponibles.</p>
+      </div>
+    </div>
+
+    <h3>Manifest du plugin Claude MCP</h3>
+    <span class="code-label">manifest.json</span>
+    <pre><code>{
+  "name": "Claude MCP Plugin",
+  "id": "claude-mcp-plugin",
+  "api": "1.0.0",
+  "main": "code.js",
+  "ui": "ui.html",
+  "editorType": ["figma", "figjam", "dev"],
+  "permissions": ["teamlibrary"],
+  "networkAccess": {
+    "allowedDomains": ["https://google.com"],
+    "devAllowedDomains": [
+      "http://localhost:3055",
+      "ws://localhost:3055"
+    ]
+  },
+  "documentAccess": "dynamic-page",
+  "enableProposedApi": true,
+  "enablePrivatePluginApi": true
+}</code></pre>
+
+    <h3>Le système de channels</h3>
+    <p>
+      Le WebSocket server gère des <strong>channels nommés</strong>. Quand le plugin Figma se connecte,
+      il génère un channel ID aléatoire (ex: <code>3qbur6w5</code>). Le MCP server Claude rejoint ce
+      même channel. Tous les messages transitent par le channel — c'est un système pub/sub simplifié.
+    </p>
+    <div class="diagram">
+      <span class="node">Claude MCP</span>
+      <span class="arrow"> → join("3qbur6w5") → </span>
+      <span class="node active">WebSocket :3055</span>
+      <span class="arrow"> ← join("3qbur6w5") ← </span>
+      <span class="node">Figma Plugin</span>
+    </div>
+  </section>
+
+  <!-- 4. SETUP FCM -->
+  <section id="setup-fcm">
+    <h2>4. Setup 2 — Figma Console MCP</h2>
+
+    <h3>Prérequis</h3>
+    <ul>
+      <li><strong>Node.js</strong> ≥ 18</li>
+      <li><strong>Figma Desktop</strong></li>
+      <li>Un <strong>Personal Access Token</strong> Figma</li>
+    </ul>
+
+    <h3>Obtenir le token Figma</h3>
+    <ol>
+      <li>Aller sur <a href="https://www.figma.com/developers/api#access-tokens" style="color:var(--accent)">figma.com/developers/api#access-tokens</a></li>
+      <li>Créer un nouveau token personnel</li>
+      <li>L'exporter dans votre shell :
+        <pre><code>export FIGMA_API_KEY="figd_votre_token_ici"</code></pre>
+      </li>
+    </ol>
+
+    <h3>Installation</h3>
+
+    <div class="step">
+      <div class="step-number">1</div>
+      <div class="step-content">
+        <strong>Le MCP s'installe via npx</strong> (pas de clone nécessaire)
+        <pre><code># Dans la config Claude, le MCP est défini comme :
+"figma-console-mcp": {
+  "command": "npx",
+  "args": ["figma-console-mcp"]
+}</code></pre>
+      </div>
+    </div>
+
+    <div class="step">
+      <div class="step-number">2</div>
+      <div class="step-content">
+        <strong>Importer le plugin Desktop Bridge dans Figma</strong>
+        <p>Dans Figma Desktop :</p>
+        <ol>
+          <li>Menu (☰) → <strong>Plugins</strong> → <strong>Development</strong> → <strong>Import plugin from manifest…</strong></li>
+          <li>Naviguer vers le manifest du Desktop Bridge :<br>
+            <span class="filepath">~/.npm/_npx/&lt;hash&gt;/node_modules/figma-console-mcp/figma-desktop-bridge/manifest.json</span>
+          </li>
+        </ol>
+        <div class="callout warning">
+          <strong>Trouver le chemin exact :</strong> Le hash npx change selon votre système. Utilisez :
+          <pre><code>find ~/.npm/_npx -name "manifest.json" -path "*desktop-bridge*"</code></pre>
+        </div>
+      </div>
+    </div>
+
+    <div class="step">
+      <div class="step-number">3</div>
+      <div class="step-content">
+        <strong>Lancer le plugin Desktop Bridge dans Figma</strong>
+        <ol>
+          <li><strong>Plugins</strong> → <strong>Development</strong> → <strong>Figma Desktop Bridge</strong></li>
+          <li>Le plugin se connecte automatiquement sur <code>ws://localhost:9223</code></li>
+          <li>Status "Connected" = prêt</li>
+        </ol>
+      </div>
+    </div>
+
+    <h3>Manifest du Desktop Bridge</h3>
+    <span class="code-label">manifest.json</span>
+    <pre><code>{
+  "name": "Figma Desktop Bridge",
+  "id": "figma-desktop-bridge-mcp",
+  "api": "1.0.0",
+  "main": "code.js",
+  "ui": "ui.html",
+  "editorType": ["figma", "dev"],
+  "capabilities": ["inspect"],
+  "enablePrivatePluginApi": true,
+  "permissions": ["teamlibrary"],
+  "documentAccess": "dynamic-page",
+  "networkAccess": {
+    "allowedDomains": [
+      "ws://localhost:9223",
+      "ws://localhost:9224",
+      "... (ports 9223–9232)"
+    ]
+  }
+}</code></pre>
+
+    <h3>L'outil secret : <code>figma_execute</code></h3>
+    <p>
+      Le Desktop Bridge déverrouille l'outil <code>figma_execute</code> — il permet d'exécuter
+      du <strong>JavaScript arbitraire dans le contexte plugin Figma</strong>. C'est l'accès
+      complet à la <a href="https://www.figma.com/plugin-docs/" style="color:var(--accent)">Figma Plugin API</a>.
+      Vous pouvez créer des images, manipuler des nodes, tout ce que l'API plugin permet.
+    </p>
+
+    <div class="callout success">
+      <strong>C'est la clé pour l'import d'images.</strong> Ni claude-talk-to-figma ni les outils
+      standard de figma-console-mcp ne peuvent importer des images. Seul <code>figma_execute</code>
+      avec du code Plugin API peut le faire (via <code>figma.createImage()</code>).
+    </div>
+  </section>
+
+  <!-- 5. WORKFLOW -->
+  <section id="workflow">
+    <h2>5. Le workflow combiné en pratique</h2>
+
+    <h3>Avant de commencer</h3>
+    <p>Dans votre terminal, <strong>3 éléments doivent tourner</strong> :</p>
+    <ol>
+      <li><strong>WebSocket server</strong> : <code>cd ~/claude-talk-to-figma-mcp && bun run dist/socket.js</code></li>
+      <li><strong>Figma Desktop</strong> ouvert avec les <strong>2 plugins</strong> connectés :
+        <ul>
+          <li>Claude MCP Plugin (channel ID noté)</li>
+          <li>Figma Desktop Bridge (status "Connected")</li>
+        </ul>
+      </li>
+      <li><strong>Claude Code</strong> lancé dans votre projet</li>
+    </ol>
+
+    <h3>Séquence typique</h3>
+
+    <h4>Phase 1 : Scaffolding (claude-talk-to-figma)</h4>
+    <p>Création rapide de la structure :</p>
+    <pre><code>// Claude rejoint le channel
+→ join_channel("3qbur6w5")
+
+// Création des frames, rectangles, textes
+→ create_frame({ name: "Desktop — Accueil", width: 1440, height: 1800, ... })
+→ create_rectangle({ name: "grid__item--a", parentId: "...", ... })
+→ create_text({ text: "Techniques graphiques", parentId: "...", ... })
+
+// Auto-layout
+→ set_auto_layout({ nodeId: "...", layoutMode: "VERTICAL", itemSpacing: 12, ... })
+
+// Polices
+→ load_font_async({ family: "GTWalsheim-Light", style: "Regular" })
+→ set_font_name({ nodeId: "...", family: "GTWalsheim-Light" })
+
+// Composants
+→ create_component_from_node({ nodeId: "...", name: "sidebar" })</code></pre>
+
+    <h4>Phase 2 : Enrichissement (figma-console-mcp)</h4>
+    <p>Opérations avancées via <code>figma_execute</code> :</p>
+    <pre><code>// Importer une image dans un rectangle
+→ figma_execute({
+    code: `
+      const imageBytes = await fetch('...').then(r => r.arrayBuffer());
+      const image = figma.createImage(new Uint8Array(imageBytes));
+      const node = figma.getNodeById('4:295');
+      node.fills = [{ type: 'IMAGE', imageHash: image.hash, scaleMode: 'FILL' }];
+    `
+  })
+
+// Screenshot pour vérification
+→ figma_take_screenshot()
+
+// Extraction de design tokens
+→ figma_get_variables()
+→ figma_get_styles()</code></pre>
+
+    <h4>Phase 3 : Roundtrip vers le code</h4>
+    <p>
+      Avec le <strong>Figma MCP Server officiel</strong> (annoncé dans le blog post),
+      on peut ramener le design Figma dans le code via un prompt + lien de frame.
+      C'est la boucle complète : <strong>Code → Figma → Code</strong>.
+    </p>
+  </section>
+
+  <!-- 6. TOOLS -->
+  <section id="tools">
+    <h2>6. Catalogue des outils disponibles</h2>
+
+    <h3>claude-talk-to-figma (~25 outils)</h3>
+
+    <h4><span class="tag creation">Création</span> Éléments</h4>
+    <table>
+      <tr><th>Outil</th><th>Description</th></tr>
+      <tr><td><code>create_frame</code></td><td>Créer un frame (avec parentId pour imbriquer)</td></tr>
+      <tr><td><code>create_rectangle</code></td><td>Créer un rectangle</td></tr>
+      <tr><td><code>create_text</code></td><td>Créer du texte (avec police, taille, couleur)</td></tr>
+      <tr><td><code>create_ellipse</code></td><td>Créer une ellipse / cercle</td></tr>
+      <tr><td><code>create_polygon</code></td><td>Créer un polygone</td></tr>
+      <tr><td><code>create_star</code></td><td>Créer une étoile</td></tr>
+      <tr><td><code>create_page</code></td><td>Créer une nouvelle page</td></tr>
+      <tr><td><code>create_component_from_node</code></td><td>Convertir un frame en composant</td></tr>
+      <tr><td><code>create_component_set</code></td><td>Combiner des composants en variants</td></tr>
+      <tr><td><code>create_component_instance</code></td><td>Instancier un composant</td></tr>
+    </table>
+
+    <h4><span class="tag creation">Création</span> Modification</h4>
+    <table>
+      <tr><th>Outil</th><th>Description</th></tr>
+      <tr><td><code>set_fill_color</code></td><td>Couleur de remplissage (RGBA 0-1)</td></tr>
+      <tr><td><code>set_stroke_color</code></td><td>Couleur de bordure</td></tr>
+      <tr><td><code>set_font_name</code></td><td>Changer la famille de police</td></tr>
+      <tr><td><code>set_font_size</code></td><td>Changer la taille de police</td></tr>
+      <tr><td><code>set_font_weight</code></td><td>Changer le poids (100-900)</td></tr>
+      <tr><td><code>set_auto_layout</code></td><td>Configurer l'auto-layout (flexbox Figma)</td></tr>
+      <tr><td><code>set_text_content</code></td><td>Modifier le contenu texte</td></tr>
+      <tr><td><code>set_effects</code></td><td>Appliquer des effets (ombre, flou…)</td></tr>
+      <tr><td><code>set_corner_radius</code></td><td>Arrondir les coins</td></tr>
+      <tr><td><code>resize_node</code></td><td>Redimensionner</td></tr>
+      <tr><td><code>move_node</code></td><td>Déplacer</td></tr>
+      <tr><td><code>delete_node</code></td><td>Supprimer</td></tr>
+    </table>
+
+    <h4><span class="tag extraction">Extraction</span> Lecture</h4>
+    <table>
+      <tr><th>Outil</th><th>Description</th></tr>
+      <tr><td><code>get_document_info</code></td><td>Infos du document (pages, page courante)</td></tr>
+      <tr><td><code>get_node_info</code></td><td>Infos détaillées d'un nœud (enfants, styles…)</td></tr>
+      <tr><td><code>get_nodes_info</code></td><td>Infos de plusieurs nœuds</td></tr>
+      <tr><td><code>scan_text_nodes</code></td><td>Scanner tous les textes d'un sous-arbre</td></tr>
+      <tr><td><code>get_selection</code></td><td>Sélection courante</td></tr>
+      <tr><td><code>get_pages</code></td><td>Liste des pages</td></tr>
+      <tr><td><code>load_font_async</code></td><td>Charger une police dans Figma</td></tr>
+      <tr><td><code>export_node_as_image</code></td><td>Exporter un nœud en image</td></tr>
+    </table>
+
+    <h3>figma-console-mcp (~56 outils)</h3>
+
+    <h4><span class="tag debug">Debug</span> Console & Screenshots</h4>
+    <table>
+      <tr><th>Outil</th><th>Description</th></tr>
+      <tr><td><code>figma_get_console_logs</code></td><td>Récupérer les logs de la console</td></tr>
+      <tr><td><code>figma_watch_console</code></td><td>Streaming temps réel des logs</td></tr>
+      <tr><td><code>figma_take_screenshot</code></td><td>Capture d'écran du canvas</td></tr>
+      <tr><td><code>figma_get_status</code></td><td>État de la connexion</td></tr>
+    </table>
+
+    <h4><span class="tag extraction">Extraction</span> Design System</h4>
+    <table>
+      <tr><th>Outil</th><th>Description</th></tr>
+      <tr><td><code>figma_get_variables</code></td><td>Extraire toutes les variables/tokens</td></tr>
+      <tr><td><code>figma_get_styles</code></td><td>Extraire les styles (couleurs, typo, effets)</td></tr>
+      <tr><td><code>figma_get_component</code></td><td>Métadonnées d'un composant</td></tr>
+      <tr><td><code>figma_get_component_for_development</code></td><td>Composant + image + specs dev</td></tr>
+      <tr><td><code>figma_get_file_data</code></td><td>Structure complète du fichier</td></tr>
+      <tr><td><code>figma_search_components</code></td><td>Rechercher des composants</td></tr>
+    </table>
+
+    <h4><span class="tag creation">Création</span> L'arme ultime : <code>figma_execute</code></h4>
+    <table>
+      <tr><th>Outil</th><th>Description</th></tr>
+      <tr><td><code>figma_execute</code></td><td><strong>Exécuter du JS arbitraire</strong> dans le contexte Plugin API.<br>Accès complet à <code>figma.*</code> — création, modification, import d'images, tout.</td></tr>
+    </table>
+
+    <h4><span class="tag creation">Création</span> Variables & Tokens (batch)</h4>
+    <table>
+      <tr><th>Outil</th><th>Description</th></tr>
+      <tr><td><code>figma_batch_create_variables</code></td><td>Créer jusqu'à 100 variables en un appel</td></tr>
+      <tr><td><code>figma_batch_update_variables</code></td><td>Mettre à jour 100 variables en un appel</td></tr>
+      <tr><td><code>figma_setup_design_tokens</code></td><td>Créer un système de tokens complet atomiquement</td></tr>
+    </table>
+  </section>
+
+  <!-- 7. IMAGES -->
+  <section id="images">
+    <h2>7. Import d'images programmatique</h2>
+
+    <p>
+      C'est le cas d'usage qui nécessite les <strong>deux MCP ensemble</strong>.
+      <code>claude-talk-to-figma</code> crée les frames et placeholders.
+      <code>figma-console-mcp</code> (via <code>figma_execute</code>) remplit les placeholders avec de vraies images.
+    </p>
+
+    <h3>Méthode : image fill via figma_execute</h3>
+
+    <p>
+      La Plugin API Figma expose <code>figma.createImage(bytes)</code> pour créer une image
+      à partir de bytes bruts (Uint8Array). On peut ensuite l'appliquer comme fill sur n'importe quel nœud.
+    </p>
+
+    <span class="code-label">Exemple : remplir un rectangle avec une image encodée en base64</span>
+    <pre><code>figma_execute({
+  code: `
+    // Décoder le base64 en bytes
+    const base64 = "iVBORw0KGgo..."; // image en base64
+    const raw = atob(base64);
+    const bytes = new Uint8Array(raw.length);
+    for (let i = 0; i < raw.length; i++) {
+      bytes[i] = raw.charCodeAt(i);
+    }
+
+    // Créer l'image dans Figma
+    const image = figma.createImage(bytes);
+
+    // Appliquer comme fill sur le nœud cible
+    const node = figma.getNodeById('4:295');
+    node.fills = [{
+      type: 'IMAGE',
+      imageHash: image.hash,
+      scaleMode: 'FILL'
+    }];
+
+    return { success: true, nodeId: '4:295', imageHash: image.hash };
+  `
+})</code></pre>
+
+    <div class="callout warning">
+      <strong>Taille des images :</strong> Les images sont transmises en base64 via le MCP,
+      ce qui augmente la taille de ~33%. Pour des images volumineuses (>5 MB),
+      il est préférable de les redimensionner/compresser côté Claude Code avant envoi,
+      ou d'utiliser <code>fetch()</code> depuis une URL locale si le plugin le permet.
+    </div>
+
+    <h3>Workflow complet pour remplir une grille</h3>
+    <ol>
+      <li>Claude Code lit les images du dossier <code>assets/images/</code></li>
+      <li>Les encode en base64 (ou les redimensionne si trop grandes)</li>
+      <li>Appelle <code>figma_execute</code> pour chaque image avec le nodeId du placeholder</li>
+      <li>Prend un screenshot pour vérifier le résultat</li>
+    </ol>
+  </section>
+
+  <!-- 8. LIMITATIONS -->
+  <section id="limitations">
+    <h2>8. Limitations et contournements</h2>
+
+    <table>
+      <thead>
+        <tr>
+          <th>Limitation</th>
+          <th>Détail</th>
+          <th>Contournement</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>Polices variables</strong></td>
+          <td>Les variable fonts (.ttf VF) provoquent un timeout systématique via <code>load_font_async</code></td>
+          <td>Appliquer manuellement dans Figma, ou utiliser <code>figma_execute</code> avec <code>loadFontAsync()</code></td>
+        </tr>
+        <tr>
+          <td><strong>Import images</strong></td>
+          <td><code>claude-talk-to-figma</code> ne peut pas importer d'images</td>
+          <td>Utiliser <code>figma_execute</code> via figma-console-mcp</td>
+        </tr>
+        <tr>
+          <td><strong>CSS Grid 2D</strong></td>
+          <td>L'auto-layout Figma est 1D (flexbox), pas 2D (grid)</td>
+          <td>Auto-layout sur les sous-conteneurs, positionnement statique pour la grille</td>
+        </tr>
+        <tr>
+          <td><strong>Appels parallèles</strong></td>
+          <td>Trop d'appels MCP simultanés (&gt;4) causent des timeouts WebSocket</td>
+          <td>Limiter à 2-3 appels en parallèle, alterner scans/modifications</td>
+        </tr>
+        <tr>
+          <td><strong>Variant sets</strong></td>
+          <td><code>combineAsVariants()</code> timeout quand composants sont intégrés dans un layout</td>
+          <td>Nommer les composants <code>Property=Value</code>, Figma les regroupe dans Assets</td>
+        </tr>
+        <tr>
+          <td><strong>Connexion instable</strong></td>
+          <td>Le WebSocket peut décrocher après beaucoup d'opérations</td>
+          <td>Reconnecter le plugin → nouveau channel ID → <code>join_channel</code></td>
+        </tr>
+      </tbody>
+    </table>
+  </section>
+
+  <!-- 9. CONFIG -->
+  <section id="config">
+    <h2>9. Configuration complète</h2>
+
+    <h3>~/.claude.json (extrait MCP)</h3>
+    <span class="code-label">~/.claude.json</span>
+    <pre><code>{
+  "mcpServers": {
+    "claude-talk-to-figma": {
+      "command": "/Users/man/.bun/bin/bun",
+      "args": [
+        "/Users/man/claude-talk-to-figma-mcp/dist/talk_to_figma_mcp/server.js"
+      ]
+    },
+    "figma-console-mcp": {
+      "command": "npx",
+      "args": ["figma-console-mcp"]
+    }
+  }
+}</code></pre>
+
+    <div class="callout">
+      <strong>Variable d'environnement requise pour figma-console-mcp :</strong>
+      <pre><code>export FIGMA_API_KEY="figd_votre_personal_access_token"</code></pre>
+      Ajouter dans votre <code>~/.zshrc</code> ou <code>~/.bashrc</code> pour persister.
+    </div>
+
+    <h3>Checklist de démarrage rapide</h3>
+    <table>
+      <tr><th>#</th><th>Action</th><th>Vérification</th></tr>
+      <tr><td>1</td><td>WebSocket : <code>bun run dist/socket.js</code></td><td><code>http://localhost:3055/status</code></td></tr>
+      <tr><td>2</td><td>Figma Desktop ouvert sur le fichier</td><td>—</td></tr>
+      <tr><td>3</td><td>Plugin Claude MCP → Connect</td><td>Channel ID visible</td></tr>
+      <tr><td>4</td><td>Plugin Desktop Bridge → lancé</td><td>Status "Connected"</td></tr>
+      <tr><td>5</td><td>Claude Code → <code>join_channel("...")</code></td><td>Réponse "Successfully joined"</td></tr>
+      <tr><td>6</td><td>Test : <code>get_document_info</code></td><td>Nom du fichier retourné</td></tr>
+    </table>
+  </section>
+
+  <!-- 10. RESSOURCES -->
+  <section id="ressources">
+    <h2>10. Ressources</h2>
+
+    <h3>Repos GitHub</h3>
+    <ul>
+      <li><a href="https://github.com/arinspunk/claude-talk-to-figma-mcp" style="color:var(--accent)">arinspunk/claude-talk-to-figma-mcp</a> — Création temps réel via WebSocket</li>
+      <li><a href="https://github.com/southleft/figma-console-mcp" style="color:var(--accent)">southleft/figma-console-mcp</a> — Extraction, debug, execute arbitraire</li>
+    </ul>
+
+    <h3>Articles Figma</h3>
+    <ul>
+      <li><a href="https://www.figma.com/blog/introducing-claude-code-to-figma/" style="color:var(--accent)">From Claude Code to Figma</a> (17 fév 2026) — Capture-to-Figma, roundtrip code ↔ design</li>
+      <li><a href="https://www.figma.com/plugin-docs/" style="color:var(--accent)">Figma Plugin API docs</a> — Référence pour <code>figma_execute</code></li>
+      <li><a href="https://help.figma.com/hc/en-us/articles/32132100833559" style="color:var(--accent)">Figma MCP Server guide</a> — Serveur MCP officiel Figma</li>
+    </ul>
+
+    <h3>Documentation MCP</h3>
+    <ul>
+      <li><a href="https://modelcontextprotocol.io/" style="color:var(--accent)">Model Context Protocol</a> — Spécification MCP</li>
+      <li><a href="https://docs.anthropic.com/en/docs/build-with-claude/mcp" style="color:var(--accent)">Anthropic MCP docs</a> — Intégration Claude + MCP</li>
+    </ul>
+  </section>
+
+  <footer>
+    <p>
+      Document de référence technique — Projet Techniques Graphiques HEFF<br>
+      Généré le 20 février 2026 par Claude Code (Opus 4).
+      <br><br>
+      Ce document est destiné à servir de source pour la rédaction d'un article
+      combinant l'expérience pratique du projet TG avec l'annonce officielle
+      <a href="https://www.figma.com/blog/introducing-claude-code-to-figma/">From Claude Code to Figma</a>.
+    </p>
+  </footer>
+
+</div>
+
+</body>
+</html>

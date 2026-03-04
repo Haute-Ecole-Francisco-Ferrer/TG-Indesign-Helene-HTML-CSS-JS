@@ -1,118 +1,142 @@
-# Contexte de reprise — InDesign → Figma Pipeline
+# Contexte de reprise — TG HEFF (InDesign → Figma → Web)
 
 ## Projet
 - **Chemin** : `/Users/man/htdocs/techniques-graphiques-Helene/`
-- **Figma** : https://www.figma.com/design/BP5yIRa2ibXTJugNtu9xww/TG-Indesign-Hélène
-- **But** : Extraire la maquette InDesign HEFF (Techniques Graphiques, Haute École Francisco Ferrer, Bruxelles) et la recréer dans Figma avec structure BEM et auto-layouts. Ensuite HTML/CSS/JS puis thème WordPress.
-
-## Stack technique
-- **Source** : InDesign 2026 (fichier `preparation/Dossier HEFF_site_TG/HEFF_site_TG.indd`)
-- **Extraction** : ExtendScript via `osascript` (AppleScript → InDesign)
-- **Figma MCP** : `claude-talk-to-figma` (WebSocket port 3055, plugin dans `~/claude-talk-to-figma-mcp/src/claude_mcp_plugin/manifest.json`)
-- **MCP InDesign** : `~/indesign-mcp-server/` (installé mais non chargé par Claude Code — on utilise osascript directement)
+- **Figma (layout WEB)** : https://www.figma.com/design/BP5yIRa2ibXTJugNtu9xww/TG-Indesign-Hélène
+- **Figma (import InDesign)** : https://www.figma.com/design/2prI8jyOGIRGeZOtuZohgZ/TF-Hélène (référence typo/couleurs)
+- **But** : Site vitrine créative étudiants Techniques Graphiques HEFF. Pipeline : InDesign → Figma → HTML/CSS/JS → WordPress.
 
 ## Pour reprendre le travail Figma
 1. Ouvrir Figma Desktop sur le fichier TG-Indesign-Hélène
 2. Lancer le WebSocket : `cd ~/claude-talk-to-figma-mcp && bun run dist/socket.js`
 3. Dans Figma : Plugins → Development → Claude MCP Plugin → Connect
-4. Donner le channel ID à Claude
-5. Claude fait `join_channel` puis peut travailler
+4. Donner le channel ID à Claude → `join_channel`
+
+## État des polices Figma
+- **GTWalsheim-Light** : installée, **APPLIQUÉE** à tous les textes corps (toutes pages InDesign + WEB)
+- **Sligoil Micro** : installée dans `~/Library/Fonts/SligoilVF.ttf`, **IMPOSSIBLE via MCP** (timeout systématique — police variable). Essayé : `Sligoil`, `Sligoil Micro`, `SligoilMicro`, `Sligoil-Micro`, `SligoilMicro-Regular` + `load_font_async` + `set_font_name`. **→ À appliquer manuellement dans Figma** aux titres : sidebar__title, sidebar__logo/header__logo, menu__badge--*, info__title, footer__col-4
+
+## Structure du Figma
+
+### Pages InDesign originales (13 pages)
+Pages 01-13 avec positionnement absolu InDesign. Textes + placeholders images gris (#333).
+
+| Page | Frame ID | Corrections appliquées |
+|------|----------|----------------------|
+| 01 — Accueil | 3:42 | Placeholders harmonisés #333 |
+| 07 — Les options | 3:48 | Couleurs violettes corrigées, mosaïque ajoutée |
+| 08 — Option Web | 3:49 | Texte description redimensionné 320px |
+| 09 — Option Édition | 3:50 | Texte description redimensionné 320px |
+| 10 — Option 3D/VFX | 3:51 | Texte description redimensionné 320px |
+| Autres pages | 3:43-3:54 | Pas de corrections |
+
+### Pages WEB (reflètent le design HTML/CSS)
+
+| Page | Page ID | Frame ID | Contenu | Auto-layout |
+|------|---------|----------|---------|-------------|
+| WEB — 01 Accueil (Grille 8 col) | 4:290 | 4:291 | Grille CSS 8 col, 19 zones, sidebar 56px, 1440×1800 | sidebar, school-card, intro-card |
+| WEB — 02 Menu overlay | 4:318 | 4:321 | 3 colonnes violettes + barre info lavande, 1440×900 | 3 colonnes, info bar, sidebar |
+| WEB — 03 Vue détail | 4:319 | 4:335 | Layout flex 38%/62%, info panel violet, 1440×900 | info panel, sidebar |
+| WEB — 04 Footer | 4:320 | 4:348 | Barre lavande 4 colonnes + logos, 1440×160 | footer HORIZONTAL, sidebar |
+| WEB — 05 Hover state | 10:40 | 10:43 | Extrait grille avec tooltip violet visible, 1440×900 | tooltip VERTICAL |
+| WEB — 06 Breakpoint 4 col | 10:41 | 10:56 | Grille 4 col (≥1520px), 1520×1700 | — |
+| WEB — 07 Mobile | 10:42 | 10:80 | Grille 4 col mobile (≤768px), 375×1490 | — |
+
+### Composants Figma créés
+
+| Composant | ID | Clé |
+|---|---|---|
+| sidebar | 10:30 | a1eb05c... |
+| footer | 10:31 | 1e18b8a... |
+| detail__info-panel | 10:32 | f37b6ae... |
+| school-card | 10:33 | e306d5d... |
+| intro-card | 10:34 | 32bc40d... |
+| Option=Web | 10:35 | 7e5e7c2... |
+| Option=Édition | 10:36 | d29cf69... |
+| Option=3D / VFX | 10:37 | a1b7ca3... |
+
+### IDs importants dans les pages WEB
+
+**Page Accueil (4:291) :**
+- Sidebar : 4:292
+- Zone s (school card) : 4:296, textes 4:314, 4:315
+- Zone t (intro) : 4:305, texte 4:316
+- Zones images : a=4:295, b=4:297, c=4:298, d=4:299, e=4:300, f=4:301, g=4:302, h=4:303, i=4:304, j=4:306, k=4:307, l=4:308, m=4:309, n=4:310, o=4:311, p=4:312, q=4:313
+- Menu toggle : 4:317
+
+**Page Menu (4:321) :**
+- Colonnes : web=4:323, edition=4:324, 3d=4:325
+- Info bar : 4:326
+
+**Page Détail (4:335) :**
+- Image main : 4:337, Info panel : 4:338, Thumbs : 4:339-4:342
+
+## Mapping grille CSS → images
+
+```
+"a a a s s c c c"   a=mahira-1.jpg    s=school card violet    c=ayman-logan.jpg
+"a a a b b c c c"   b=screenshot-48-36.png
+"a a a b b c c c"
+"d d d e f c c c"   d=6-copie.png     e=img-9898.jpg          f=vocabase-06.jpg
+"d d d e f g g h"   g=marais.png      h=screenshot-46-48.png
+"d d d e f g g h"
+"i i t t t k k k"   i=screenshot-50-21.png  t=intro violet    k=devos-elodie.jpg
+"i i j j j k k k"   j=personnage-yiwei.png
+"l l m m m k k k"   l=screenshot-47-34.png  m=vocabase-05.jpg
+"n n o o p p p q"   n=scan-blaireau.jpg  o=image07.jpg  p=90969.jpg  q=img-9060.jpg
+```
+
+Calcul : 1440px - 56px sidebar = 1384px ÷ 8 = **173px/col**. Hero 6 lignes × 150px = 900px (100vh).
 
 ## Ce qui a été fait
 
-### Extraction InDesign (100% terminée)
-Tous les fichiers sont dans `docs/extraction/` :
-- `document-structure.json` — 13 pages, 1024px large, hauteurs variables (1220, 1214, 924, 1092)
-- `styles.json` — Sligoil (Micro Bold, titres 30-36pt), GTWalsheim-Light (corps 7-22pt)
-- `colors.json` — Noir, Blanc (Paper), Violet rgb(96,38,158)
-- `text-frames.json` — Tous les blocs texte avec position (x,y), dimensions, contenu, style, fonte
-- `image-frames.json` — Tous les blocs images avec position, dimensions, chemin source (Links/)
-
-### Figma — Pages et frames (100%)
-13 pages créées avec frames aux bonnes dimensions, fond noir :
-
-| Page | Page ID | Frame ID | Dimensions | Contenu |
-|------|---------|----------|-----------|---------|
-| 01 — Accueil | 0:1 | 3:42 | 1024×1220 | **PEUPLÉE** : 3 textes + 16 placeholders images |
-| 02 — Accueil (hover) | 3:30 | 3:43 | 1024×1220 | **PEUPLÉE** : 6 textes + 16 placeholders |
-| 03 — Accueil (sélection) | 3:31 | 3:44 | 1024×1220 | **PEUPLÉE** : 6 textes + 16 placeholders |
-| 04 — Projet détail (Édition) | 3:32 | 3:45 | 1024×1220 | **PEUPLÉE** : 4 textes + 20 placeholders |
-| 05 — Projet détail (3D/VFX) | 3:33 | 3:46 | 1024×1220 | **PEUPLÉE** : 4 textes + 17 placeholders |
-| 06 — Galerie | 3:34 | 3:47 | 1024×1220 | **PEUPLÉE** : 3 textes + 20 placeholders |
-| 07 — Les options | 3:35 | 3:48 | 1024×1214 | **PEUPLÉE** : 7 textes + 4 shapes |
-| 08 — Option Web | 3:36 | 3:49 | 1024×924 | **PEUPLÉE** : 6 textes + 6 placeholders |
-| 09 — Option Édition | 3:37 | 3:50 | 1024×924 | **PEUPLÉE** : 4 textes + 7 placeholders |
-| 10 — Option 3D/VFX | 3:38 | 3:51 | 1024×924 | **PEUPLÉE** : 6 textes + 6 placeholders |
-| 11 — Galerie élargie | 3:39 | 3:52 | 1024×924 | **PEUPLÉE** : 2 textes + 6 placeholders |
-| 12 — Contact | 3:40 | 3:53 | 1024×1092 | **PEUPLÉE** : 3 textes + 18 placeholders |
-| 13 — Contact (variante) | 3:41 | 3:54 | 1024×1092 | **PEUPLÉE** : 3 textes + 18 placeholders |
+- [x] Extraction InDesign complète (13 pages → 5 JSON)
+- [x] 13 pages Figma InDesign peuplées (textes + placeholders)
+- [x] Corrections InDesign : couleurs p7, textes p8-10, placeholders p1, mosaïque p7
+- [x] 4 pages Figma WEB créées (Accueil grille, Menu, Détail, Footer)
+- [x] Conversion assets : 5 HEIC→JPG, 3 PSD→PNG, 5 PDF→PNG
+- [x] 57 fichiers dans `assets/images/`
+- [x] Site HTML/CSS/JS complet et fonctionnel (index.html, style.css, main.js)
+- [x] GTWalsheim-Light chargée et appliquée à tous les textes corps (toutes pages)
+- [x] Auto-layouts appliqués : sidebars, colonnes menu, info panel, footer, school-card, intro-card
+- [x] 8 composants Figma créés (sidebar, footer, detail-info, school-card, intro-card, 3 option-cards)
+- [x] 3 pages WEB supplémentaires : Hover state, Breakpoint 4 col, Mobile
+- [x] Menu overlay affiné pixel-perfect vs PDF InDesign :
+  - [x] Dégradé couleurs colonnes : clair→foncé (gauche→droite) corrigé
+  - [x] Texture grain/noise ajoutée sur les 3 colonnes (SVG feTurbulence)
+  - [x] Sligoil variable font activée (font-weight: 100 900)
+  - [x] Proportions colonnes/bottom ajustées (flex 7:3)
+  - [x] Typographie corrigée via analyse Figma (fichier TF-Hélène importé depuis InDesign) :
+    - [x] Badges (WEB, ÉDITION, 3D) → GTWalsheim Light 21px (était Sligoil)
+    - [x] Listes colonnes → Sligoil 11px line-height 2.2 (était GTWalsheim 15px)
+    - [x] INFORMATIONS GÉNÉRALES → GTWalsheim Light 21px (était Sligoil bold 26px)
+    - [x] Info-list → Sligoil 12px line-height 2.2 (était 15px)
+    - [x] Sidebar titre → Sligoil weight 300 (était 700)
+  - [x] Grain texture : mix-blend-mode hard-light ajouté (conforme Figma)
+  - [x] Footer : couleur texte corrigée #652da1 (était #2a1245, confirmé par Figma)
 
 ## Ce qui reste à faire
 
-### ~~1. Peupler les pages vides (10 pages)~~ FAIT
-Toutes les 13 pages sont peuplées avec textes et placeholders images (rectangles gris #333).
+### 1. Sligoil Micro (MANUEL)
+- [ ] Appliquer Sligoil Micro manuellement dans Figma aux titres (sidebar__title, sidebar__logo, menu__badge--*, info__title, footer__col-4)
 
-### 2. Conversion des assets images
-Les fichiers dans `preparation/Dossier HEFF_site_TG/Links/` contiennent des formats non-web :
-- 3 PSD → convertir en PNG
-- 5 HEIC → convertir en JPG (`sips --setProperty format jpeg`)
-- 1 AI, 1 EPS → exporter manuellement ou utiliser PDF comme fallback
-- 6 PDF → exporter en PNG
-- Les JPG et PNG existants sont prêts
+### 2. Images Figma
+- [ ] Remplacer placeholders gris par vraies images (MCP ne peut pas importer → drag & drop manuel)
 
-### 3. Structuration Figma
-- **Naming BEM** : Déjà appliqué sur les pages peuplées. Continuer sur les nouvelles pages.
-- **Auto-layouts** : header, grilles, cards, footer — mapper sur CSS flexbox
-- **Composants** : project-card, option-card, sidebar, header, footer
-
-### 4. Plus tard (pas dans cette phase)
-- Code HTML/CSS/JS statique
-- Thème WordPress custom
-
-## Décisions prises
-
-| Décision | Choix | Raison |
-|----------|-------|--------|
-| MCP InDesign | osascript direct | MCP non chargé par Claude Code, osascript fait la même chose |
-| Placement Figma | Élément par élément via MCP | Plus précis que batch, l'utilisateur n'est pas pressé |
-| Naming | BEM (block__element--modifier) | Mapping direct vers classes CSS |
-| Figma | Étape intermédiaire | Pas source de vérité long terme |
-| Polices | Sligoil VF (titres), GTWalsheim-Light (corps) | Extraites du document InDesign |
-| Couleur accent | Violet rgb(96,38,158) → Figma {r:0.376, g:0.149, b:0.62} | Unique couleur custom du design |
-| Fond | Noir {r:0.05, g:0.05, b:0.05} | Cohérent avec le design InDesign |
-
-## Contenu du site (pour référence)
-- **HEFF** = Haute École Francisco Ferrer, Bruxelles
-- **Département** : Techniques Graphiques
-- **3 options** : Web, Édition, 3D / Effets spéciaux
-- **Contenu** : Vitrine créative des étudiants (projets de packaging, sites web, livrets, 3D/VFX)
-- **Adresse** : Quai de Willebroeck 33, 1000 Bruxelles — +32 (0)2 279 57 92 — heff.technique@he-ferrer.eu
-
-## Éléments récurrents sur chaque page (header/sidebar)
-Ces éléments apparaissent sur quasi toutes les pages InDesign :
-- Logo "Heff" : x=15, y=419, fontSize=22, GTWalsheim-Light, blanc
-- Sidebar "Techniques graphiques" : x=20, y=26, fontSize=30, Sligoil Micro Bold, blanc
-- Bloc intro "Bienvenue sur la vitrine..." : x=597, y=563, fontSize=14, GTWalsheim-Light, blanc
+### 3. Restant hors Figma
+- [ ] EPS `899.eps` : pas de conversion auto (page 8 option Web)
+- [ ] Git commit des changements
 
 ## Fichiers clés
 
 | Fichier | Rôle |
 |---------|------|
-| `preparation/Dossier HEFF_site_TG/HEFF_site_TG.indd` | Source InDesign (21 Mo) |
-| `preparation/Dossier HEFF_site_TG/HEFF_site_TG.idml` | Format échange (XML dans ZIP) |
-| `preparation/Dossier HEFF_site_TG/Links/` | 44 assets visuels |
-| `preparation/Dossier HEFF_site_TG/Document fonts/` | GTWalsheim-Light.otf, SligoilVF.ttf |
-| `docs/extraction/*.json` | Données extraites d'InDesign |
-| `docs/plans/2026-02-19-indesign-to-figma.md` | Plan d'implémentation détaillé |
-| `/tmp/extract_*.jsx` | Scripts ExtendScript utilisés pour l'extraction |
-| `~/indesign-mcp-server/` | MCP InDesign cloné et adapté pour 2026 |
-| `~/claude-talk-to-figma-mcp/src/claude_mcp_plugin/` | Plugin Figma (manifest corrigé avec editorType "dev") |
+| `index.html` | 303 lignes — sidebar + grille 19 zones + menu + détail + footer |
+| `assets/css/style.css` | 717 lignes — grid-template-areas, 3 breakpoints |
+| `assets/js/main.js` | 206 lignes — 8 projets, modal, menu, Escape |
+| `docs/extraction/*.json` | 5 fichiers JSON extraits d'InDesign |
+| `docs/plans/CONTEXTE-REPRISE.md` | Ce fichier |
+| `contexte.md` | Ancien contexte (HTML/CSS focus) |
 
-## Scripts ExtendScript réutilisables
-Pour relancer une extraction, les scripts sont dans `/tmp/extract_*.jsx`. Commande type :
-```bash
-osascript -e 'tell application "Adobe InDesign 2026"
-  do script POSIX file "/tmp/extract_textframes.jsx" language javascript
-end tell'
-```
-Note : ExtendScript n'a pas de JSON natif — les scripts incluent un polyfill `jsonStringify()`.
+## Prochaine étape
+→ Appliquer Sligoil Micro manuellement aux titres dans Figma → Remplacer les placeholders gris par les vraies images (drag & drop) → Git commit
